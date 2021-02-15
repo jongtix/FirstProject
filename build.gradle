@@ -1,0 +1,90 @@
+// 출처: 스프링 부트와 AWS로 혼자 구현하는 웹 서비스
+// 출처: https://dingue.tistory.com/17
+// 출처: https://galid1.tistory.com/649?category=757944
+// 출처: https://cchoimin.tistory.com/entry/Gradle-annotationProcessor
+// 출처: https://java.ihoney.pe.kr/525 [허니몬(Honeymon)의 자바guru]
+// 출처: http://honeymon.io/tech/2020/07/09/gradle-annotation-processor-with-querydsl.html
+// 출처: http://honeymon.io/tech/2020/07/09/gradle-annotation-processor-with-querydsl.html
+buildscript {   // 프로젝트의 플러그인 의존성 관리를 위한 설정
+    ext {  // build.gradle에서 사용하는 전역변수 설정
+        springBootVersion = '2.1.7.RELEASE'
+    }
+    repositories {  // 각종 의존성(라이브러리)을 어떤 원격 저장소에서 받을지 지정
+//        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+/*
+plugins {   //  앞서 선언한 플러그인 의존성들을 적용할 것인지 결정
+    id 'java'   // JAVA 코드를 작성하는 데 사용
+    id 'eclipse'
+    id 'org.saciidoctor.convert' version '1.5.8'    // SpringRestDocs 사용을 위한 plugin
+    id 'io.spring.dependency-management' version '${springBootVersion}'    // 스프링 부트의 의존성들을 관리해 주는 플러그인
+    id 'org.springframework.boot' version '${springBootVersion}'
+//    id 'war'  // providedRuntime(), providedCompile() 사용을 위한 plugin
+}
+*/
+
+group 'com.jongtix.book'
+version '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+//    mavenCentral()
+    jcenter()
+}
+
+// def 변수명  // 로컬 변수 선언
+ext {         // 프로젝트 전체와 서브 프로젝트에서도 접근 가능한 변수 선언
+    set('snippetsDir', file('build/generated-snippets'))
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    // testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    // testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+// inputs: 테스크의 입력정보
+// outputs: 테스크의 출력정보
+// dependsOn: 테스크가 의존하는 테스크 정보
+// mustRunAfter: 반드시 먼저 실행되어야 하는 테스크 지정
+test {
+    doFirst {
+        print 'Start test Task\n'
+    }
+
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+
+    doLast {
+        print 'End test Task\n'
+    }
+}
+
+/*
+asciiDoctor {
+    doFirst {
+        print 'Start asciiDoctor Task\n'
+    }
+
+    inputs.dir snippetsDir
+    dependsOn test
+
+    doLast {
+        print 'End asciiDoctor Task\n'
+    }
+
+}
+*/
