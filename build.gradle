@@ -7,7 +7,7 @@
 // 출처: http://honeymon.io/tech/2020/07/09/gradle-annotation-processor-with-querydsl.html
 buildscript {   // 프로젝트의 플러그인 의존성 관리를 위한 설정
     ext {  // build.gradle에서 사용하는 전역변수 설정
-        springBootVersion = '2.1.7.RELEASE'
+        springBootVersion = '2.3.6.RELEASE'
     }
     repositories {  // 각종 의존성(라이브러리)을 어떤 원격 저장소에서 받을지 지정
 //        mavenCentral()
@@ -17,31 +17,38 @@ buildscript {   // 프로젝트의 플러그인 의존성 관리를 위한 설�
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
-
+/*
+//기존에 사용하던 방법
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-
-/*
+*/
+//새롭게 추가된 방법
 plugins {   //  앞서 선언한 플러그인 의존성들을 적용할 것인지 결정
     id 'java'   // JAVA 코드를 작성하는 데 사용
     id 'eclipse'
-    id 'org.saciidoctor.convert' version '1.5.8'    // SpringRestDocs 사용을 위한 plugin
-    id 'io.spring.dependency-management' version '${springBootVersion}'    // 스프링 부트의 의존성들을 관리해 주는 플러그인
-    id 'org.springframework.boot' version '${springBootVersion}'
+    id 'org.springframework.boot' version '2.3.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'    // 스프링 부트의 의존성들을 관리해 주는 플러그인
+    id 'org.asciidoctor.convert' version '1.5.8'    // SpringRestDocs 사용을 위한 plugin
 //    id 'war'  // providedRuntime(), providedCompile() 사용을 위한 plugin
 }
-*/
 
 group 'com.jongtix.book'
 version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
-repositories {
-//    mavenCentral()
-    jcenter()
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor // annotationProcessor: 컴파일 시점으로 코드를 생성함
+                                        //                      이것을 설정하지 않으면 lombok을 포함해서 프로젝트를 export 할 때 lombok에서 제공하는 anootation이 전부 포함되지 않음
+    }
+}
+
+repositories {  //gradle이 필요로하는 라이브러리를 자동으로 다운로드하기 위해 사용하는 저장소
+//    mavenCentral()    //Maven 중앙 저장소
+    jcenter()   //JCenter 저장소
 }
 
 // def 변수명  // 로컬 변수 선언
@@ -49,12 +56,68 @@ ext {         // 프로젝트 전체와 서브 프로젝트에서도 접근 가�
     set('snippetsDir', file('build/generated-snippets'))
 }
 
-dependencies {
+dependencies {  //프로젝트에서 필요한 라이브러리를 저장소에서 로드하기 위한 문장
+                //implementation ~  컴파일 시에 의존하는(사용하는) 라이브러리
+                //testCompile ~     테스트 컴파일(단위테스트)에 사용하는 라이브러리
+                //classpath ~       컴파일부터 실행시까지 의존하는 라이브러리
     compile('org.springframework.boot:spring-boot-starter-web')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     // testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     // testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    /*
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'	// RabbitMQ를 위한 Sprint AMQP 의존성 추가
+//	위와 같은 문장
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
+    implementation 'org.springframework.boot:spring-boot-starter-batch'	// Spring Batch 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'	// JPA 사용을 위한 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-quartz'	// 스케줄링을 위한 Quartz 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-web'	// REST API를 위한 의존성 추가
+    implementation 'org.apache.kafka:kafka-streams'	// kafka stream 사용을 위한 의존성 추가
+    implementation 'org.springframework.kafka:spring-kafka'	// kafka 사용을 위한 의존성 추가
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+    annotationProcessor 'org.projectlombok:lombok'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'	// Tomcat 설정을 위한 의존성 추가
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude module: 'junit'	// JUnit4에 대한 의존성 제외
+        exclude module: 'junit-vintage-engine'
+    }
+
+    testImplementation 'org.springframework.amqp:spring-rabbit-test'
+    testImplementation 'org.springframework.batch:spring-batch-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'	// JUnit5 추가
+    testCompileOnly 'org.junit.jupiter:junit-jupiter-params'	// 출처: https://java.ihoney.pe.kr/525 [허니몬(Honeymon)의 자바guru]
+    testCompileOnly 'org.junit.platform:junit-platform-runner'
+    testCompileOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    // Querydsl 설정 추가 -start
+    // 출처: http://honeymon.io/tech/2020/07/09/gradle-annotation-processor-with-querydsl.html
+    compileOnly 'com.querydsl:querydsl-core'
+    compileOnly 'com.querydsl:querydsl-jpa'
+
+    annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa") // querydsl JPAAnnotationProcessor 사용 지정
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api") // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
+    annotationProcessor("jakarta.annotation:jakarta.annotation-api") // java.lang.NoClassDefFoundError(javax.annotation.Generated) 발생 대응
+    // Querydsl 설정 추가 -end
+    */
 }
+
+/*
+// Querydsl 설정 추가 -start
+// 출처: http://honeymon.io/tech/2020/07/09/gradle-annotation-processor-with-querydsl.html
+*/
+/** clean 태스크 실행시 QClass 삭제 *//*
+
+clean {
+    delete file('src/main/generated') // 인텔리제이 Annotation processor 생성물 생성위치
+}
+// Querydsl 설정 추가 -end
+*/
 
 // inputs: 테스크의 입력정보
 // outputs: 테스크의 출력정보
@@ -73,8 +136,7 @@ test {
     }
 }
 
-/*
-asciiDoctor {
+asciidoctor {
     doFirst {
         print 'Start asciiDoctor Task\n'
     }
@@ -87,4 +149,3 @@ asciiDoctor {
     }
 
 }
-*/
