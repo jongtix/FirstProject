@@ -70,6 +70,9 @@ dependencies {  //프로젝트에서 필요한 라이브러리를 저장소에�
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'	// JPA 사용을 위한 의존성 추가 && 스프링 부트 버전에 맞춰 자동으로 JPA 관련 라이브러리들의 버전을 관리해 줌
+    compile 'com.h2database:h2' //h2: 인메모리 관계형 데이터베이스 && 테스트 용도로 많이 사용
+
     // testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     // testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 

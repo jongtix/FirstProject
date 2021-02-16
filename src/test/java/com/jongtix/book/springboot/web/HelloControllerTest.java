@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest //여러 스프링 테스트 어노테이션 중, Web(Spring MVC)에 집중할 수 있는 어노테이션
             //선언할 경우 @Controller, @ControllerAdvice 등은 사용할 수 있음
             //@Service, @Component, @Repository 등은 사용할 수 없음
+            //JAP 기능이 작동하지 않음
 public class HelloControllerTest {
 
     @Autowired
