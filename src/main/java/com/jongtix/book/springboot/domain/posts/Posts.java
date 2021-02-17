@@ -1,5 +1,6 @@
 package com.jongtix.book.springboot.domain.posts;
 
+import com.jongtix.book.springboot.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor  //parameter 없는 기본 생성자 자동 추가
 @Entity //테이블과 링크될 클래스임을 나타냄
-public class Posts {
+public class Posts extends BaseTimeEntity {
 
     @Id //해당 테이블의 PK 필드임을 나타냄
     @GeneratedValue(strategy = GenerationType.IDENTITY) //PK 생성 규칙GenerationType.IDENTITY: auto_increment
@@ -26,11 +27,15 @@ public class Posts {
     private String author;
 
     @Builder    //해당 클래스의 빌더 패턴 클래스를 생성
-    public Posts(Long id, String title, String content, String author) {
-        this.id = id;
+    public Posts(String title, String content, String author) {
         this.title = title;
         this.content = content;
         this.author = author;
+    }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
 }

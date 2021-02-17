@@ -9,11 +9,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostsUpdateRequestDto {
 
-    private Long id;
+//    private Long id;
     private String title;
     private String content;
-    private String author;
+//    private String author;
 
+    @Builder
+    public PostsUpdateRequestDto(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+/*
     @Builder
     public PostsUpdateRequestDto(Long id, String title, String content, String author) {
         this.id = id;
@@ -21,13 +27,15 @@ public class PostsUpdateRequestDto {
         this.content = content;
         this.author = author;
     }
+*/
 
+/*
     public Posts toEntity() {
         return Posts.builder()
-                .id(id)
                 .title(title)
                 .content(content)
                 .author(author)
                 .build();
     }
+*/
 }

@@ -8,3 +8,11 @@ spring:
   h2:
     console:
       enabled: true
+
+# 최근 버전의 경우 보안상의 이유로 웹 콘솔에서 새 데이터베이스를 작성할 수 없어서 h2-console을 사용할 수 없음
+# 아래 추가 설정을 해야 h2-console 사용 가능
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
