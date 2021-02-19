@@ -1,9 +1,11 @@
 spring:
   jpa:
     show_sql: true
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect #Spring Boot 버전업에 따른 변화(AS-IS)
+        dialect: org.hibernate.dialect.MySQL57Dialect       #TO-BE
+        storage_engine: innodb                              #TO-BE
 
   h2:
     console:
@@ -16,10 +18,23 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+# Spring Boot 버전업에 따른 변화(추가)
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb;MODE=MYSQL
+      username: sa
 
 # application-oauth.yml의 설정 불러오기 위한 설정
+# Spring Boot 버전업에 따른 변화(AS-IS)
   profiles:
     include: oauth
+# TO-BE
+#  profiles:
+#    group:
+#      #<group>: dev, auth
+#      local-real: local-real, oauth
+#      real: real, real-db, oauth
+#      real1: real1, real-db, oauth
+#      real2: real2, real-db, oauth
 
 # 세션을 DB에 저장하기 위한 설정
   session:

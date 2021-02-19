@@ -43,9 +43,11 @@ com/jongtix/book/springboot/config/auth/LoginUser.java
 com/jongtix/book/springboot/web/dto/PostsUpdateRequestDto.java
  com.jongtix.book.springboot.web.dto.PostsUpdateRequestDto
  com.jongtix.book.springboot.web.dto.PostsUpdateRequestDto$PostsUpdateRequestDtoBuilder
-com/jongtix/book/springboot/Application.java
- com.jongtix.book.springboot.Application
-com/jongtix/book/springboot/config/auth/SecurityConfig.java
- com.jongtix.book.springboot.config.auth.SecurityConfig
 com/jongtix/book/springboot/web/HelloController.java
  com.jongtix.book.springboot.web.HelloController
+com/jongtix/book/springboot/config/auth/SecurityConfig.java
+ com.jongtix.book.springboot.config.auth.SecurityConfig
+com/jongtix/book/springboot/config/JpaConfig.java
+ com.jongtix.book.springboot.config.JpaConfig
+com/jongtix/book/springboot/Application.java
+ com.jongtix.book.springboot.Application

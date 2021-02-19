@@ -1,22 +1,31 @@
 package com.jongtix.book.springboot.domain.user;
 
 import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
+//Junit4
+//@RunWith(SpringRunner.class)
+//Junit5
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class UserRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
 
-    @After
+    //Junit4
+    //@After
+    //Junit5
+    @AfterEach
     public void cleanup() { userRepository.deleteAll(); }
 
     @Test
