@@ -1,0 +1,10 @@
+com/jongtix/book/springboot/web/IndexControllerTest.java
+ com.jongtix.book.springboot.web.IndexControllerTest
+com/jongtix/book/springboot/web/HelloControllerTest.java
+ com.jongtix.book.springboot.web.HelloControllerTest
+com/jongtix/book/springboot/web/dto/HelloResponseDtoTest.java
+ com.jongtix.book.springboot.web.dto.HelloResponseDtoTest
+com/jongtix/book/springboot/web/PostControllerTest.java
+ com.jongtix.book.springboot.web.PostControllerTest
+com/jongtix/book/springboot/domain/posts/PostRepositoryTest.java
+ com.jongtix.book.springboot.domain.posts.PostRepositoryTest

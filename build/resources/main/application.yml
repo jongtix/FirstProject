@@ -16,7 +16,3 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
-
-# application-oauth.yml의 설정 불러오기 위한 설정
-  profiles:
-    include: oauth
