@@ -2,5 +2,8 @@
 /.gradle/
 .gradle
 .idea
+#git rm -r -f --cached .
+#git add .
+#git commit -m "cache clear"
 application-oauth.properties
 application-oauth.yml
