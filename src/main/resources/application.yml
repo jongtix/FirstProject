@@ -1,3 +1,9 @@
+server:
+  port: 18089
+  servlet:
+    context-path: / #Spring Boot 1.X: server.context-path
+                    #Spring Boot 2.X: server.servlet.context-path
+
 spring:
   jpa:
     show_sql: true
