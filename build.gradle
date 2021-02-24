@@ -84,6 +84,8 @@ dependencies {  //프로젝트에서 필요한 라이브러리를 저장소에�
     compile 'org.springframework.session:spring-session-jdbc'   //세션을 DB에 저장하기 위해 사용하는 spring-session-jdbc 의존성 추가
                                                                 //JPA를 사용하면 세션 테이블을 자동 생성해 줌
 
+    compile 'org.mariadb.jdbc:mariadb-java-client'  //MariaDB 의존성 추가
+
     // testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     // testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 

@@ -1,0 +1,39 @@
+spring:
+  jpa:
+    show_sql: true
+    properties:
+      hibernate:
+#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect #Spring Boot 버전업에 따른 변화(AS-IS)
+        dialect: org.hibernate.dialect.MySQL57Dialect       #TO-BE
+        storage_engine: innodb                              #TO-BE
+
+  h2:
+    console:
+      enabled: true
+
+# 최근 버전의 경우 보안상의 이유로 웹 콘솔에서 새 데이터베이스를 작성할 수 없어서 h2-console을 사용할 수 없음
+# 아래 추가 설정을 해야 h2-console 사용 가능
+  datasource:
+#    url: jdbc:h2:mem:testdb
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
+# Spring Boot 버전업에 따른 변화(추가)
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb;MODE=MYSQL
+      username: sa
+
+# 세션을 DB에 저장하기 위한 설정
+  session:
+    store-type: jdbc
+
+# Test OAuth
+# CustomOAuth2UserService ERROR 해결
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test
+            client-secret: test
+            scope: profile,email
