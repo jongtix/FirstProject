@@ -4,6 +4,9 @@ server:
     context-path: / #Spring Boot 1.X: server.context-path
                     #Spring Boot 2.X: server.servlet.context-path
 
+  tomcat:
+    max-threads: 500
+
 spring:
   jpa:
     show_sql: true
