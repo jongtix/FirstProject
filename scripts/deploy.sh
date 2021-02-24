@@ -40,7 +40,7 @@ if [ ${OLD_JAR} -ef ${JAR_NAME} ]; then
   echo ">>> 같은 파일"
 else
   echo ">>> 다른 파일"
-  if [ ! -d $REPOSITORY/backup ]
+  if [ ! -d $REPOSITORY/backup ];
     mkdir $REPOSITORY/backup
   fi
   mv $OLD_JAR $REPOSITORY/backup/${OLD_JAR##*/}
