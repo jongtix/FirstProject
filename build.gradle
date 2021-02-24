@@ -62,7 +62,10 @@ dependencies {  //프로젝트에서 필요한 라이브러리를 저장소에�
                 //implementation ~  컴파일 시에 의존하는(사용하는) 라이브러리
                 //testCompile ~     테스트 컴파일(단위테스트)에 사용하는 라이브러리
                 //classpath ~       컴파일부터 실행시까지 의존하는 라이브러리
-    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile('org.springframework.boot:spring-boot-starter-web') {
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+    compile('org.springframework.boot:spring-boot-starter-jetty')
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 
     compileOnly 'org.projectlombok:lombok' //lombok 추가 && lombok을 사용하기 위해 프로젝트마다 Settings > Build > Compiler > Annotation Processors > Enable annotation processing 체크 필요
