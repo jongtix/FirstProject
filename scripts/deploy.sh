@@ -4,6 +4,8 @@ PROJECT_HOME=/home/ec2-user/app
 REPOSITORY=$PROJECT_HOME/step2
 PROJECT_NAME=FirstProject
 
+OLD_JAR=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
+
 echo ">>> Build 파일 복사"
 
 cp $REPOSITORY/zip/*.jar $REPOSITORY
@@ -33,6 +35,11 @@ echo ">>> $JAR_NAME 에 실행 권한 추가"
 chmod +x $JAR_NAME
 
 echo ">>> $JAR_NAME 실행"
+
+if [ ${OLD_JAR} -ne ${JAR_NAME} ]; then
+  echo ">>> 이전 배포 파일 삭제"
+  rm $OLD_JAR
+fi
 
 nohup java -jar \
   -Dspring.config.location=classpath:/application.yml,classpath:/application-real.yml,$PROJECT_HOME/application-oauth.yml,$PROJECT_HOME/application-real-db.yml \
