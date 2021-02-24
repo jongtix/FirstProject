@@ -36,8 +36,10 @@ chmod +x $JAR_NAME
 
 echo ">>> $JAR_NAME 실행"
 
-if [ ${OLD_JAR} -ne ${JAR_NAME} ]; then
-  echo ">>> 이전 배포 파일 삭제"
+if [ ${OLD_JAR} -ef ${JAR_NAME} ]; then
+  echo ">>> 같은 파일"
+else
+  echo ">>> 다른 파일"
   rm $OLD_JAR
 fi
 
