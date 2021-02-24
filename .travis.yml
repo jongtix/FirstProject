@@ -23,7 +23,7 @@ notifications:
 before_install:
   - chmod +x gradlew  #gradlew Permission denied 해결
                       #출처: https://m.blog.naver.com/PostView.nhn?blogId=ggomjae&logNo=221778504421&proxyReferer=https:%2F%2Fwww.google.com%2F
-  - zip -r FirstProject FirstProject #현재 위치의 모든 파일을 FirstProject 이름으로 압축
+  - zip -r FirstProject * #현재 위치의 모든 파일을 FirstProject 이름으로 압축
   - mkdir -p deploy
   - mv FirstProject.zip deploy/FirstProject.zip
 
