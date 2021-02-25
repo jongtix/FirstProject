@@ -3,12 +3,13 @@ spring:
   profiles:
     include: oauth, real-db
 
-  jpa:
-    properties:
-      hibernate:
-        #        dialect: org.hibernate.dialect.MySQL5InnoDBDialect #Spring Boot 버전업에 따른 변화(AS-IS)
-        dialect: org.hibernate.dialect.MySQL57Dialect       #TO-BE
-        storage_engine: innodb                              #TO-BE
+#일정한 환경 설정 통합
+#  jpa:
+#    properties:
+#      hibernate:
+#        #        dialect: org.hibernate.dialect.MySQL5InnoDBDialect #Spring Boot 버전업에 따른 변화(AS-IS)
+#        dialect: org.hibernate.dialect.MySQL57Dialect       #TO-BE
+#        storage_engine: innodb                              #TO-BE
 
   session:
     store-type: jdbc

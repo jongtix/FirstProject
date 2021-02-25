@@ -8,5 +8,5 @@ build
 #git commit -m "cache clear"
 application-oauth.properties
 application-oauth.yml
-application-local-*.yml
 application-db.yml
+application-local*.yml
