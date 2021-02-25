@@ -5,7 +5,7 @@ ABSDIR=$(dirname $ABSPATH)
 source ${ABSDIR}/profile.sh
 
 PROJECT_HOME=/home/ec2-user/app
-REPOSITORY=$REPOSITORY/step3
+REPOSITORY=PROJECT_HOME/step3
 PROJECT_NAME=FirstProject
 
 echo ">>> Build 파일 복사"
