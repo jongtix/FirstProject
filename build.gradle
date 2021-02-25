@@ -36,7 +36,7 @@ plugins {   //  앞서 선언한 플러그인 의존성들을 적용할 것인�
 }
 
 group 'com.jongtix.book'
-version '1.0.8-SNAPSHOT'
+version '1.0.1-SNAPSHOT' +new Date().format("yyyyMMddHHmmss")
 sourceCompatibility = 1.8
 
 /*
