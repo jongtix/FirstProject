@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROJECT_HOME=/home/ec2-user/app
-REPOSITORY=$PROJECT_HOME/step2
+REPOSITORY=$PROJECT_HOME/step3
 PROJECT_NAME=FirstProject
 
 OLD_JAR=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
