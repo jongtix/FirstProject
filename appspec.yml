@@ -20,7 +20,8 @@ hooks:  #CodeDeploy 배포 단계에서 실행할 명령어를 지정
       timeout: 60
       runas: ec2-user
   ApplicationStart: #ApplicationStart라는 단계에서 deploy.sh을 ec2-user 권한으로 실행
-    - location: deploy.sh
+#    - location: deploy.sh  #무중단 배포 AS-IS
+    - location: start.sh  #TO-BE
       timeout: 60 #스크립트 실행 60초 이상 수행되면 실패
       runas: ec2-user
   ValidateService:
