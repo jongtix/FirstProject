@@ -12,7 +12,13 @@ PROJECT_NAME=FirstProject
 echo ">>> 기존 Build 파일 백업"
 echo ">>> cp -rp $REPOSITORY/jar/$PROJECT_NAME.jar $REPOSITORY/jar/backup/$PROJECT_NAME.jar"
 
-cp -rp $REPOSITORY/jar/$PROJECT_NAME.jar $REPOSITORY/jar/backup/$PROJECT_NAME.jar|
+if [ ! -d $REPOSITORY/jar/backup ]; then
+  mkdir $REPOSITORY/jar/backup
+fi
+
+TIME_STAMP=$(date +%Y%m%d%H%M%s)
+
+cp -rp $REPOSITORY/jar/$PROJECT_NAME.jar $REPOSITORY/jar/backup/$PROJECT_NAME.$TIME_STAMP.jar
 
 echo ">>> Build 파일 복사"
 echo ">>> cp $REPOSITORY/zip/*.jar $REPOSITORY/jar/$PROJECT_NAME.jar"
