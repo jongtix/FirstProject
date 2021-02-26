@@ -31,7 +31,7 @@ then
   echo ">>> spring_boot_1(${IDLE_ID})이 실행 중이 아닙니다."
 else
   echo ">>> docker restart $IDLE_ID"
-  docker restart IDLE_ID
+  docker restart $IDLE_ID
   sleep 10
 fi
 
@@ -45,6 +45,6 @@ then
   echo ">>> spring_boot_1(${IDLE_ID})이 실행 중이 아닙니다."
 else
   echo ">>> docker restart $IDLE_ID"
-  docker restart IDLE_ID
+  docker restart $IDLE_ID
   sleep 10
 fi
