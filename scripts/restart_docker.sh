@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+ABSPATH=$(readlink -f $0)
+ABSDIR=$(dirname $ABSPATH)
+
+source ${ABSDIR}/profile_docker.sh #JAVA의 import 기능과 비슷
+
+PROJECT_HOME=/home/ec2-user/app
+REPOSITORY=$PROJECT_HOME/step4
+PROJECT_NAME=FirstProject
+
+echo ">>> 기존 Build 파일 백업"
+echo ">>> cp -rp $REPOSITORY/jar/$PROJECT_NAME.jar $REPOSITORY/jar/backup/$PROJECT_NAME.jar"
+
+cp -rp $REPOSITORY/jar/$PROJECT_NAME.jar $REPOSITORY/jar/backup/$PROJECT_NAME.jar|
+
+echo ">>> Build 파일 복사"
+echo ">>> cp $REPOSITORY/zip/*.jar $REPOSITORY/jar/$PROJECT_NAME.jar"
+
+cp -rp $REPOSITORY/zip/*.jar $REPOSITORY/jar/$PROJECT_NAME.jar
+
+echo ">>> 도커 재기동"
+
+echo ">>> 이름이 $IDLE_NAME 인 Docker Process의 ID 확인"
+IDLE_ID=$(docker inspect -f '{{.Id}}' spring_boot_1)
+
+if [ -z ${IDLE_ID} ]
+then
+  echo ">>> spring_boot_1(${IDLE_ID})이 실행 중이 아닙니다."
+else
+  echo ">>> docker restart $IDLE_ID"
+  docker restart IDLE_ID
+  sleep 10
+fi
+
+echo ">>> 이름이 $IDLE_NAME 인 Docker Process의 ID 확인"
+IDLE_ID=$(docker inspect -f '{{.Id}}' spring_boot_2)
+
+if [ -z ${IDLE_ID} ]
+then
+  echo ">>> spring_boot_1(${IDLE_ID})이 실행 중이 아닙니다."
+else
+  echo ">>> docker restart $IDLE_ID"
+  docker restart IDLE_ID
+  sleep 10
+fi
