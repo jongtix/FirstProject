@@ -21,8 +21,10 @@ cp -rp $REPOSITORY/zip/*.jar $REPOSITORY/jar/$PROJECT_NAME.jar
 
 echo ">>> 도커 재기동"
 
+IDLE_NAME=spring_boot_1
+
 echo ">>> 이름이 $IDLE_NAME 인 Docker Process의 ID 확인"
-IDLE_ID=$(docker inspect -f '{{.Id}}' spring_boot_1)
+IDLE_ID=$(docker inspect -f '{{.Id}}' $IDLE_NAME)
 
 if [ -z ${IDLE_ID} ]
 then
@@ -33,8 +35,10 @@ else
   sleep 10
 fi
 
+IDLE_NAME=spring_boot_2
+
 echo ">>> 이름이 $IDLE_NAME 인 Docker Process의 ID 확인"
-IDLE_ID=$(docker inspect -f '{{.Id}}' spring_boot_2)
+IDLE_ID=$(docker inspect -f '{{.Id}}' $IDLE_NAME)
 
 if [ -z ${IDLE_ID} ]
 then
