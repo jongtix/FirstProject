@@ -31,12 +31,12 @@ plugins {   //  앞서 선언한 플러그인 의존성들을 적용할 것인�
     id 'eclipse'
     id 'org.springframework.boot' version '2.3.6.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'    // 스프링 부트의 의존성들을 관리해 주는 플러그인
-    id 'org.asciidoctor.convert' version '1.5.8'    // SpringRestDocs 사용을 위한 plugin
+    id 'org.asciidoctor.convert' version '1.5.9'    // SpringRestDocs 사용을 위한 plugin
 //    id 'war'  // providedRuntime(), providedCompile() 사용을 위한 plugin
 }
 
 group 'com.jongtix.book'
-version '1.0.1-SNAPSHOT' +new Date().format("yyyyMMddHHmmss")
+version '1.0.1-SNAPSHOT' + new Date().format("yyyyMMddHHmmss")
 sourceCompatibility = 1.8
 
 /*
@@ -55,7 +55,8 @@ repositories {  //gradle이 필요로하는 라이브러리를 자동으로 다�
 
 // def 변수명  // 로컬 변수 선언
 ext {         // 프로젝트 전체와 서브 프로젝트에서도 접근 가능한 변수 선언
-    set('snippetsDir', file('build/generated-snippets'))
+    snippetsDir = file('build/generated-snippets')    //SpringRestDocs snippet이 저장될 Directory 선언
+                                                      //snippet: REST API에 대한 정보를 담고 자동 생성되는 *.adoc 문서
 }
 
 dependencies {  //프로젝트에서 필요한 라이브러리를 저장소에서 로드하기 위한 문장
@@ -91,6 +92,15 @@ dependencies {  //프로젝트에서 필요한 라이브러리를 저장소에�
                                                                 //JPA를 사용하면 세션 테이블을 자동 생성해 줌
 
     compile 'org.mariadb.jdbc:mariadb-java-client'  //MariaDB 의존성 추가
+
+//    implementation 'com.squareup.okhttp3:okhttp'    //OkHttp 의존성 추가
+//    implementation 'com.squareup.okhttp3:logging-interceptor'
+
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'   //mockMVC에 rest docs 의존성 추가
+    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'      //asciidoctor 구성이 들어있는 spring-restdocs-asciidoctor를 dependency에 추가
+                                                                                //*.adoc 파일에서 사용할 {snippets}(스니펫 송성)를 자동으로 설정
+                                                                                //operation 블록 매크로 사용 가능
+                                                                                //출처: https://velog.io/@hydroniumion/BE1%EC%A3%BC%EC%B0%A8-Spring-Rest-Docs-%EC%A0%81%EC%9A%A9%EA%B8%B0
 
     // testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     // testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
@@ -166,11 +176,14 @@ test {
     }
 }
 
+//asciidoctor 설정
+//Ascii doctor: 직접 작성한 문서를 html 파일로 변환 해주는 툴(?)
 asciidoctor {
     doFirst {
         print 'Start asciiDoctor Task\n'
     }
 
+    attributes 'snippets': snippetsDir
     inputs.dir snippetsDir
     dependsOn test
 
@@ -179,3 +192,36 @@ asciidoctor {
     }
 
 }
+
+//bootJar Task 설정
+//생성된 jar 파일에 문서들을 static하게 넣고 싶을 때 사용하는 옵션
+bootJar {
+    dependsOn asciidoctor
+    from ("${asciidoctor.outputDir}/html5") {   //gradle build 시 ./build/asciidoc/html5/에 html 파일이 생성
+        into 'static/docs'
+    }
+}
+
+/**
+ * Spring REST Docs 전체 흐름
+ * 출처: https://velog.io/@hydroniumion/BE1%EC%A3%BC%EC%B0%A8-Spring-Rest-Docs-%EC%A0%81%EC%9A%A9%EA%B8%B0
+
+ 1) gradle(or maven) clean : 프로젝트 내 build 폴더 삭제(초기화)
+ 2) 테스트 케이스 수행
+
+ ※ **주의사항**
+ 메서드명을 한글로 하면 이후 ./gradlew build 때 asciidoc 에러가 발생한다.
+ 메서드명은 영어로 하고 테스트 결과를 한글로 보고 싶다면 @Display 애노테이션을 붙이자
+  @Display(value = "한글_테스트_명")
+  @Test
+  void test() throws Exception { ...
+
+  3) 테스트 결과가 adoc 파일로 생성됨(build/generated-snippets/*.adoc 형태)
+  4) html 파일을 생성해줄 index.adoc 파일 생성 (src/docs/asciidoc/index.adoc)
+  5) index.adoc 에서 테스트 결과를 모아 문서 작성(snippet import 등)
+  6) ./gradlew build(or maven package) → build/asciidoc/html5 경로에 index.html 생성됐는지 확인
+  7) 터미널 열고 → 프로젝트 경로 → cd build/lib/
+  8) java -jar [생성된 jar 파일] (예 : java -jar spring-rest-docs-example.jar)
+  9) http://localhost:8080/docs/index.html 접속해서 확인
+
+ */

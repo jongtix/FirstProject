@@ -1,0 +1,34 @@
+= Spring REST Docs JUnit 5 Sample
+Andy Wilkinson;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+
+Sample application demonstrating how to use Spring REST Docs with JUnit 5.
+
+`SampleJUnit5ApplicationTests` makes a call to a very simple service and produces three
+documentation snippets.
+
+One showing how to make a request using cURL:
+
+include::{snippets}/index-controller-test/load_save_page/curl-request.adoc[]
+include::{snippets}/post-controller-test/delete_posts/curl-request.adoc[]
+include::{snippets}/post-controller-test/get_posts/curl-request.adoc[]
+include::{snippets}/post-controller-test/save_posts/curl-request.adoc[]
+include::{snippets}/post-controller-test/update_posts/curl-request.adoc[]
+
+One showing the HTTP request:
+
+include::{snippets}/index-controller-test/load_save_page/http-request.adoc[]
+include::{snippets}/post-controller-test/delete_posts/http-request.adoc[]
+include::{snippets}/post-controller-test/get_posts/http-request.adoc[]
+include::{snippets}/post-controller-test/save_posts/http-request.adoc[]
+include::{snippets}/post-controller-test/update_posts/http-request.adoc[]
+
+And one showing the HTTP response:
+
+include::{snippets}/index-controller-test/load_save_page/http-response.adoc[]
+include::{snippets}/post-controller-test/delete_posts/http-response.adoc[]
+include::{snippets}/post-controller-test/get_posts/http-response.adoc[]
+include::{snippets}/post-controller-test/save_posts/http-response.adoc[]
+include::{snippets}/post-controller-test/update_posts/http-response.adoc[]
