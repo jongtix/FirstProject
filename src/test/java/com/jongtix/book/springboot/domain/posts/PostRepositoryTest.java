@@ -2,6 +2,7 @@ package com.jongtix.book.springboot.domain.posts;
 
 import org.junit.After;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -31,6 +32,29 @@ public class PostRepositoryTest {
     @AfterEach
     public void cleanup() {
         postsRepository.deleteAll();
+    }
+
+    @DisplayName("querydsl_Custom_설정_기능_확인")
+    @Test
+    public void querydsl_custom_config_check() {
+        //given
+        String title = "title";
+        String content = "content";
+        String author = "author";
+
+        postsRepository.save(Posts.builder()
+                .title(title)
+                .content(content)
+                .author(author)
+                .build());
+
+        //when
+        List<Posts> postsList = postsRepository.findByAuthor(author);
+
+        //then
+        assertThat(postsList.get(0).getTitle()).isEqualTo(title);
+        assertThat(postsList.get(0).getContent()).isEqualTo(content);
+        assertThat(postsList.get(0).getAuthor()).isEqualTo(author);
     }
 
     @Test
