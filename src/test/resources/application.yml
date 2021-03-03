@@ -6,6 +6,7 @@ spring:
 #        dialect: org.hibernate.dialect.MySQL5InnoDBDialect #Spring Boot 버전업에 따른 변화(AS-IS)
         dialect: org.hibernate.dialect.MySQL57Dialect       #TO-BE
         storage_engine: innodb                              #TO-BE
+        format_sql: true  #log에 찍힌 sql문 보기 좋게 변경
 
   h2:
     console:
@@ -37,3 +38,12 @@ spring:
             client-id: test
             client-secret: test
             scope: profile,email
+
+#hibernate 로그의 ? 값을 구체적으로 보여줌
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace

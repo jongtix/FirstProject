@@ -3,6 +3,9 @@
 .gradle
 .idea
 build
+
+generated
+
 #git rm -r -f --cached .
 #git add .
 #git commit -m "cache clear"

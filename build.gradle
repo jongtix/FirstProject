@@ -63,6 +63,17 @@ dependencies {  //프로젝트에서 필요한 라이브러리를 저장소에�
                 //implementation ~  컴파일 시에 의존하는(사용하는) 라이브러리
                 //testCompile ~     테스트 컴파일(단위테스트)에 사용하는 라이브러리
                 //classpath ~       컴파일부터 실행시까지 의존하는 라이브러리
+                //cf)compile 보다 api 사용 권장
+
+    /**
+     * api vs implementation
+     * api: 의존 라이브러리 수정시 해당 모듈을 의존하고 있는 모듈들 또한 재빌드
+     * - A(api) <- B <- C 일 때, C 에서 A 를 접근할 수 있음
+     * - A 수정시 B 와 C 모두 재빌드
+     * implementaion: 의존 라이브러리 수정시 본 모듈까지만 재빌드
+     * - A(implementation) <- B <- C 일 때, C 에서 A 를 접근할 수 없음
+     * - A 수정시 B 까지 재빌드
+     */
 
     compile 'org.springframework.boot:spring-boot-starter-web'
 //    내장 web server를 tomcat -> jetty로 변경
@@ -101,6 +112,16 @@ dependencies {  //프로젝트에서 필요한 라이브러리를 저장소에�
                                                                                 //*.adoc 파일에서 사용할 {snippets}(스니펫 송성)를 자동으로 설정
                                                                                 //operation 블록 매크로 사용 가능
                                                                                 //출처: https://velog.io/@hydroniumion/BE1%EC%A3%BC%EC%B0%A8-Spring-Rest-Docs-%EC%A0%81%EC%9A%A9%EA%B8%B0
+
+    // Querydsl 설정 추가 -start
+    // 출처: http://honeymon.io/tech/2020/07/09/gradle-annotation-processor-with-querydsl.html
+    compile 'com.querydsl:querydsl-core'
+    compile 'com.querydsl:querydsl-jpa'
+
+    annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa") // querydsl JPAAnnotationProcessor 사용 지정
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api") // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
+    annotationProcessor("jakarta.annotation:jakarta.annotation-api") // java.lang.NoClassDefFoundError(javax.annotation.Generated) 발생 대응
+    // Querydsl 설정 추가 -end
 
     // testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     // testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
@@ -147,17 +168,52 @@ dependencies {  //프로젝트에서 필요한 라이브러리를 저장소에�
     */
 }
 
-/*
-// Querydsl 설정 추가 -start
-// 출처: http://honeymon.io/tech/2020/07/09/gradle-annotation-processor-with-querydsl.html
-*/
-/** clean 태스크 실행시 QClass 삭제 *//*
-
-clean {
-    delete file('src/main/generated') // 인텔리제이 Annotation processor 생성물 생성위치
+//Querydsl 설정 추가 -start
+//출처: https://jojoldu.tistory.com/372
+def generated='src/main/generated'
+sourceSets {
+    main.java.srcDirs += [ generated ]
 }
+
+tasks.withType(JavaCompile) {
+    options.annotationProcessorGeneratedSourcesDirectory = file(generated)
+}
+
+clean.doLast {
+    file(generated).deleteDir()
+}
+
+//출처: http://honeymon.io/tech/2020/07/09/gradle-annotation-processor-with-querydsl.html
+//def queryDslDir = "src/main/generated"
+//querydsl {
+//    library = "com.querydsl:querydsl-apt:4.2.2" // 사용할 AnnotationProcesoor 정의
+//    jpa = true
+//    querydslSourcesDir = queryDslDir
+//}
+//sourceSets {
+//    main {
+//        java {
+//            srcDir queryDslDir
+//        }
+//    }
+//}
+//
+//compileQuerydsl {
+//    options.annotationProcessorPath = configurations.querydsl
+//}
+//
+//configurations {
+//    /**
+//     * 손권남님이 공유해주신 팁
+//     * 아래를 지정하지 않으면, compile 로 걸린 JPA 의존성에 접근하지 못한다.
+//     */
+//    querydsl.extendsFrom compileClasspath
+//}
+///** clean 태스크 실행시 QClass 삭제 */
+//clean {
+//    delete file('src/main/generated') // 인텔리제이 Annotation processor 생성물 생성위치
+//}
 // Querydsl 설정 추가 -end
-*/
 
 // inputs: 테스크의 입력정보
 // outputs: 테스크의 출력정보

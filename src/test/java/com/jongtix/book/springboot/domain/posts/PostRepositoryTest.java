@@ -2,6 +2,7 @@ package com.jongtix.book.springboot.domain.posts;
 
 import org.junit.After;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -31,6 +32,103 @@ public class PostRepositoryTest {
     @AfterEach
     public void cleanup() {
         postsRepository.deleteAll();
+    }
+
+    @DisplayName("querydsl_Custom_설정_기능_확인")
+    @Test
+    public void querydsl_custom_config_check() {
+        //given
+        String title = "title";
+        String content = "content";
+        String author = "author";
+
+        postsRepository.save(Posts.builder()
+                .title(title)
+                .content(content)
+                .author(author)
+                .build());
+
+        //when
+        List<Posts> postsList = postsRepository.findByAuthor(author);
+
+        //then
+        assertThat(postsList.get(0).getTitle()).isEqualTo(title);
+        assertThat(postsList.get(0).getContent()).isEqualTo(content);
+        assertThat(postsList.get(0).getAuthor()).isEqualTo(author);
+    }
+
+    @DisplayName("querydsl_다이나믹_sort_테스트")
+    @Test
+    public void querydsl_dynamic_sort_asc_test() {
+        //given
+        postsRepository.save(Posts.builder()
+                .title("title1")
+                .content("content6")
+                .author("author8")
+                .build());
+        postsRepository.save(Posts.builder()
+                .title("title2")
+                .content("content5")
+                .author("author7")
+                .build());
+        postsRepository.save(Posts.builder()
+                .title("title3")
+                .content("content4")
+                .author("author9")
+                .build());
+
+        //when
+        List<Posts> postsListOrderByTitle = postsRepository.findAllOrderBy("title");
+        List<Posts> postsListOrderByContent = postsRepository.findAllOrderBy("content");
+        List<Posts> postsListOrderByAuthor = postsRepository.findAllOrderBy("author");
+
+        //then
+        assertThat(postsListOrderByTitle.get(0).getTitle()).isEqualTo("title1");
+        assertThat(postsListOrderByTitle.get(1).getTitle()).isEqualTo("title2");
+        assertThat(postsListOrderByTitle.get(2).getTitle()).isEqualTo("title3");
+        assertThat(postsListOrderByContent.get(0).getTitle()).isEqualTo("title3");
+        assertThat(postsListOrderByContent.get(1).getTitle()).isEqualTo("title2");
+        assertThat(postsListOrderByContent.get(2).getTitle()).isEqualTo("title1");
+        assertThat(postsListOrderByAuthor.get(0).getTitle()).isEqualTo("title2");
+        assertThat(postsListOrderByAuthor.get(1).getTitle()).isEqualTo("title1");
+        assertThat(postsListOrderByAuthor.get(2).getTitle()).isEqualTo("title3");
+    }
+
+    @DisplayName("querydsl_다이나믹_sort_desc_테스트")
+    @Test
+    public void querydsl_dynamic_sort_desc_test() {
+        //given
+        postsRepository.save(Posts.builder()
+                .title("title1")
+                .content("content6")
+                .author("author8")
+                .build());
+        postsRepository.save(Posts.builder()
+                .title("title2")
+                .content("content5")
+                .author("author7")
+                .build());
+        postsRepository.save(Posts.builder()
+                .title("title3")
+                .content("content4")
+                .author("author9")
+                .build());
+
+        //when
+        List<Posts> postsListOrderByDescTitle = postsRepository.findAllOrderByDesc("title");
+        List<Posts> postsListOrderByDescContent = postsRepository.findAllOrderByDesc("content");
+        List<Posts> postsListOrderByDescAuthor = postsRepository.findAllOrderByDesc("author");
+
+        //then
+        assertThat(postsListOrderByDescTitle.get(0).getTitle()).isEqualTo("title3");
+        assertThat(postsListOrderByDescTitle.get(1).getTitle()).isEqualTo("title2");
+        assertThat(postsListOrderByDescTitle.get(2).getTitle()).isEqualTo("title1");
+        assertThat(postsListOrderByDescContent.get(0).getTitle()).isEqualTo("title1");
+        assertThat(postsListOrderByDescContent.get(1).getTitle()).isEqualTo("title2");
+        assertThat(postsListOrderByDescContent.get(2).getTitle()).isEqualTo("title3");
+        assertThat(postsListOrderByDescAuthor.get(0).getTitle()).isEqualTo("title3");
+        assertThat(postsListOrderByDescAuthor.get(1).getTitle()).isEqualTo("title1");
+        assertThat(postsListOrderByDescAuthor.get(2).getTitle()).isEqualTo("title2");
     }
 
     @Test
