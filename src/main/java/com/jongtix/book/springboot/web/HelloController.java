@@ -2,6 +2,7 @@ package com.jongtix.book.springboot.web;
 
 import com.jongtix.book.springboot.web.dto.HelloResponseDto;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +12,14 @@ public class HelloController {
     @GetMapping("/hello")   //HTTP Get 요청을 받을 수 있는 API를 만들어 줌
     public String hello() {
         return "hello";
+    }
+
+    @GetMapping("/hello/dto/{name}/{amount}")
+    public HelloResponseDto helloDtoRest(@PathVariable("name")  //외부에서 API로 넘긴 파라미터를 가져오는 어노테이션
+                                                 String name,
+                                     @PathVariable("amount")
+                                             int amount) {
+        return new HelloResponseDto(name, amount);
     }
 
     @GetMapping("/hello/dto")
