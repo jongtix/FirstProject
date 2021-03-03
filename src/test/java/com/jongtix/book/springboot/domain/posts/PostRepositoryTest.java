@@ -57,6 +57,80 @@ public class PostRepositoryTest {
         assertThat(postsList.get(0).getAuthor()).isEqualTo(author);
     }
 
+    @DisplayName("querydsl_다이나믹_sort_테스트")
+    @Test
+    public void querydsl_dynamic_sort_asc_test() {
+        //given
+        postsRepository.save(Posts.builder()
+                .title("title1")
+                .content("content6")
+                .author("author8")
+                .build());
+        postsRepository.save(Posts.builder()
+                .title("title2")
+                .content("content5")
+                .author("author7")
+                .build());
+        postsRepository.save(Posts.builder()
+                .title("title3")
+                .content("content4")
+                .author("author9")
+                .build());
+
+        //when
+        List<Posts> postsListOrderByTitle = postsRepository.findAllOrderBy("title");
+        List<Posts> postsListOrderByContent = postsRepository.findAllOrderBy("content");
+        List<Posts> postsListOrderByAuthor = postsRepository.findAllOrderBy("author");
+
+        //then
+        assertThat(postsListOrderByTitle.get(0).getTitle()).isEqualTo("title1");
+        assertThat(postsListOrderByTitle.get(1).getTitle()).isEqualTo("title2");
+        assertThat(postsListOrderByTitle.get(2).getTitle()).isEqualTo("title3");
+        assertThat(postsListOrderByContent.get(0).getTitle()).isEqualTo("title3");
+        assertThat(postsListOrderByContent.get(1).getTitle()).isEqualTo("title2");
+        assertThat(postsListOrderByContent.get(2).getTitle()).isEqualTo("title1");
+        assertThat(postsListOrderByAuthor.get(0).getTitle()).isEqualTo("title2");
+        assertThat(postsListOrderByAuthor.get(1).getTitle()).isEqualTo("title1");
+        assertThat(postsListOrderByAuthor.get(2).getTitle()).isEqualTo("title3");
+    }
+
+    @DisplayName("querydsl_다이나믹_sort_desc_테스트")
+    @Test
+    public void querydsl_dynamic_sort_desc_test() {
+        //given
+        postsRepository.save(Posts.builder()
+                .title("title1")
+                .content("content6")
+                .author("author8")
+                .build());
+        postsRepository.save(Posts.builder()
+                .title("title2")
+                .content("content5")
+                .author("author7")
+                .build());
+        postsRepository.save(Posts.builder()
+                .title("title3")
+                .content("content4")
+                .author("author9")
+                .build());
+
+        //when
+        List<Posts> postsListOrderByDescTitle = postsRepository.findAllOrderByDesc("title");
+        List<Posts> postsListOrderByDescContent = postsRepository.findAllOrderByDesc("content");
+        List<Posts> postsListOrderByDescAuthor = postsRepository.findAllOrderByDesc("author");
+
+        //then
+        assertThat(postsListOrderByDescTitle.get(0).getTitle()).isEqualTo("title3");
+        assertThat(postsListOrderByDescTitle.get(1).getTitle()).isEqualTo("title2");
+        assertThat(postsListOrderByDescTitle.get(2).getTitle()).isEqualTo("title1");
+        assertThat(postsListOrderByDescContent.get(0).getTitle()).isEqualTo("title1");
+        assertThat(postsListOrderByDescContent.get(1).getTitle()).isEqualTo("title2");
+        assertThat(postsListOrderByDescContent.get(2).getTitle()).isEqualTo("title3");
+        assertThat(postsListOrderByDescAuthor.get(0).getTitle()).isEqualTo("title3");
+        assertThat(postsListOrderByDescAuthor.get(1).getTitle()).isEqualTo("title1");
+        assertThat(postsListOrderByDescAuthor.get(2).getTitle()).isEqualTo("title2");
+    }
+
     @Test
     public void 게시글_내림차순하여_불러오기() throws Exception {
         //given
