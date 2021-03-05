@@ -2,6 +2,7 @@ package com.jongtix.book.springboot.web;
 
 import com.jongtix.book.springboot.config.auth.SecurityConfig;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -9,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -72,6 +75,26 @@ public class HelloControllerTest {
         mvc.perform(get("/hello"))            //MockMvc를 통해 /hello 주소로 HTTP GET 요청을 보냄
                 .andExpect(status().isOk())             //mvc.perform의 HTTP Header Status 결과 검증
                 .andExpect(content().string(hello));    //mvc.perform의 응답 본문 검증
+    }
+
+    @DisplayName("REST_방식으로_helloDto가_리턴된다")
+    @Test
+    @WithMockUser
+    public void helloDto_with_rest() throws Exception {
+        //given
+        String name = "hello";
+        int amount = 1000;
+
+        String url = "/hello/dto/" + name + "/" + amount;
+
+        //when
+        ResultActions result = mvc.perform(get(url)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(name)))
+                .andExpect(jsonPath("$.amount", is(amount)));
     }
 
     @Test
