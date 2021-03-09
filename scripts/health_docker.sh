@@ -4,7 +4,7 @@ ABSPATH=$(readlink -f $0)
 ABSDIR=$(dirname $ABSPATH)
 source ${ABSDIR}/profile_docker.sh
 
-IDLE_PORT=48081
+IDLE_PORT=18081
 
 echo ">>> Health Check Start!"
 echo ">>> IDLE_PORT: $IDLE_PORT"
@@ -37,7 +37,7 @@ do
   sleep 5
 done
 
-IDLE_PORT=48082
+IDLE_PORT=18082
 
 echo ">>> Health Check Start!"
 echo ">>> IDLE_PORT: $IDLE_PORT"

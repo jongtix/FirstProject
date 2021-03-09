@@ -237,6 +237,7 @@ public class PostControllerTest {
                 put(url, updatedId)
                     .content(new ObjectMapper().writeValueAsString(requestDto))
                     .contentType(MediaType.APPLICATION_JSON)
+                    .characterEncoding("UTF-8")
         );
 
         //then

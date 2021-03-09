@@ -1,0 +1,30 @@
+version: "3.4"
+
+services:
+  spring_boot_1:
+    image: spring_boot_1
+    expose:
+      - "8080"
+    ports:
+      - 18081:8080
+    volumes:
+      - /home/ec2-user/app/step4/:/app/
+
+  spring_boot_2:
+    image: spring_boot_2
+    expose:
+      - "8080"
+    ports:
+      - 18082:8080
+    volumes:
+      - /home/ec2-user/app/step4/:/app/
+
+  nginx:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - /home/ec2-user/app/step4/nginx/:/etc/nginx/
+    links:
+      - spring_boot_1
+      - spring_boot_2
