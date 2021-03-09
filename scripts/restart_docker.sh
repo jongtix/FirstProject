@@ -26,6 +26,11 @@ echo ">>> cp $REPOSITORY/zip/*.jar $REPOSITORY/jar/$PROJECT_NAME.jar"
 
 cp -rp $REPOSITORY/zip/*.jar $REPOSITORY/jar/$PROJECT_NAME.jar
 
+echo ">>> Directory 이동"
+echo ">>> cd $REPOSITORY"
+
+cd $REPOSITORY
+
 echo ">>> 도커 컴포즈 다운"
 echo ">>> $REPOSITORY/docker-compose down"
 
