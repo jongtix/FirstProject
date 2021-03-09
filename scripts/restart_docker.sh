@@ -29,7 +29,7 @@ cp -rp $REPOSITORY/zip/*.jar $REPOSITORY/jar/$PROJECT_NAME.jar
 echo ">>> 도커 컴포즈 다운"
 echo ">>> $REPOSITORY/docker-compose down"
 
-$REPOSITORY/docker-compose down
+docker-compose down
 
 echo ">>> docker-compose 파일 복사"
 echo ">>> cp $REPOSITORY/zip/$DOCKER_COMPOSE_NAME $REPOSITORY/$DOCKER_COMPOSE_NAME"
@@ -39,7 +39,7 @@ cp $REPOSITORY/zip/$DOCKER_COMPOSE_NAME $REPOSITORY/$DOCKER_COMPOSE_NAME
 echo ">>> 도커 컴포즈 업"
 echo ">>> $REPOSITORY/docker-compose up -d"
 
-$REPOSITORY/docker-compose up -d
+docker-compose up -d
 
 #echo ">>> 도커 재기동"
 #
